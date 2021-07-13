@@ -13,7 +13,8 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     font-family: sans-serif;
-    background-color: #D9E6F6;
+    /* background-color: #010a1a; */
+    background-color: #021729;
   }
 
   #__next {
@@ -34,6 +35,9 @@ const GlobalStyle = createGlobalStyle`
 const theme = {
   colors: {
     primary: '#0070f3',
+    backgroundHeader: '#010a1a',
+    backgroundLight: '#7499b96e',
+    title: '#ffffff'
   },
 }
 
