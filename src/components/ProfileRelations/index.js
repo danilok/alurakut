@@ -3,7 +3,6 @@ import Box from '../Box';
 
 export const ProfileRelationsBoxWrapper = styled(Box)`
   background-color: ${({ theme }) => theme.colors.backgroundLight};
-  height: 400px;
   .smallTitle {
     color: ${({ theme }) => theme.colors.title};
   }

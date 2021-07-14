@@ -56,7 +56,7 @@ AlurakutMenu.Wrapper = styled.header`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.backgroundHeader};
   .alurakutMenuProfileSidebar {
-    background: white;
+    background: ${({ theme }) => theme.colors.backgroundMenu};
     position: fixed;
     z-index: 100;
     padding: 46px;
@@ -89,7 +89,7 @@ AlurakutMenu.Wrapper = styled.header`
       margin-top: 12px;
       margin-bottom: 8px;
       border-color: transparent;
-      border-bottom-color: #ECF2FA;
+      border-bottom-color: ${({ theme }) => theme.colors.horizontalLine};
     }
   }
   .container {

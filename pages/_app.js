@@ -35,8 +35,11 @@ const GlobalStyle = createGlobalStyle`
 const theme = {
   colors: {
     primary: '#0070f3',
+    backgroundMain: '#021729',
     backgroundHeader: '#010a1a',
+    horizontalLine: '#021729',
     backgroundLight: '#7499b96e',
+    backgroundMenu: '#334f67',
     title: '#ffffff'
   },
 }

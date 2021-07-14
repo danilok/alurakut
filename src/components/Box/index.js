@@ -24,6 +24,7 @@ const Box = styled.div`
     font-size: 18px;
     font-weight: 400;
     margin-bottom: 20px;
+    color: ${({ theme }) => theme.colors.title};
   }
   .smallTitle {
     margin-bottom: 20px;
@@ -36,7 +37,7 @@ const Box = styled.div`
     margin-top: 12px;
     margin-bottom: 8px;
     border-color: transparent;
-    border-bottom-color: #ECF2FA;
+    border-bottom-color: ${({ theme }) => theme.colors.horizontalLine};
   }
   input {
     width: 100%;
