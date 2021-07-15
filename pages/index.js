@@ -23,6 +23,74 @@ function ProfileSidebar(propriedades) {
   )
 }
 
+function ProfileRelationsTitle(props) {
+  return (
+    <h2 className="smallTitle">
+      {props.title} ({props.items.length})
+    </h2>
+  )
+}
+
+function ProfileRelationsFollowersBox(propriedades) {
+  return (
+    <ProfileRelationsBoxWrapper>
+      <ProfileRelationsTitle title={propriedades.title} items={propriedades.items} />
+      <ul>
+        {propriedades.items.slice(0, 6).map((itemAtual) => {
+          return (
+            <li key={itemAtual.login}>
+              <a href={`https://github.com/${itemAtual.login}`}>
+                <img src={`https://github.com/${itemAtual.login}.png`} />
+                <span>{itemAtual.login}</span>
+              </a>
+            </li>
+          )
+        })}
+      </ul>
+    </ProfileRelationsBoxWrapper>
+  )
+}
+
+function ProfileRelationsPeopleBox(propriedades) {
+  return (
+    <ProfileRelationsBoxWrapper>
+      <ProfileRelationsTitle title={propriedades.title} items={propriedades.items} />
+      <ul>
+        {propriedades.items.slice(0, 6).map((itemAtual) => {
+          return (
+            <li key={itemAtual}>
+              <a href={`https://github.com/${itemAtual}`}>
+                <img src={`https://github.com/${itemAtual}.png`} />
+                <span>{itemAtual}</span>
+              </a>
+            </li>
+          )
+        })}
+      </ul>
+    </ProfileRelationsBoxWrapper>
+  )
+}
+
+function ProfileRelationsCommunitiesBox(propriedades) {
+  return (
+    <ProfileRelationsBoxWrapper>
+      <ProfileRelationsTitle title={propriedades.title} items={propriedades.items} />
+      <ul>
+        {propriedades.items.slice(0, 6).map((itemAtual) => {
+          return (
+            <li key={itemAtual.id}>
+              <a href={itemAtual.url}>
+                <img src={itemAtual.image} />
+                <span>{itemAtual.title}</span>
+              </a>
+            </li>
+          )
+        })}
+      </ul>
+    </ProfileRelationsBoxWrapper>
+  )
+}
+
 export default function Home() {
   const githubUser = 'danilok'
   // const githubUser = 'omariosouto'
@@ -34,84 +102,64 @@ export default function Home() {
     'marcobrunodev',
     'felipefialho'
   ]
-  const [comunidades, setComunidades] = React.useState([
-    {
-      id: '1498019839018903801',
-      title: 'Eu odeio acordar cedo',
-      image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg',
-      url: 'https://www.orkut.br.com/MainCommunity?cmm=10000'
-    },
-    {
-      id: '149801983901832',
-      title: 'Tokunet BR',
-      image: 'https://img10.orkut.br.com/community/3ccf2a017d731f4afcfde42460533f3f.jpg',
-      url: 'https://www.orkut.br.com/MainCommunity?cmm=70447'
-    },
-    {
-      id: '14980198390183201',
-      title: 'Kamen Rider Black & RX',
-      image: 'https://img10.orkut.br.com/community/2084b96ccf946bd6d52cac630eb7fbda.jpg',
-      url: 'https://www.orkut.br.com/MainCommunity?cmm=29669'
-    },
-    {
-      id: '1498019839423801',
-      title: 'Comando Estelar Flashman Oficial',
-      image: 'https://img10.orkut.br.com/community/23a0970bef91705505727df889fb897f.jpg',
-      url: 'https://www.orkut.br.com/MainCommunity?cmm=25212'
-    },
-    {
-      id: '149801523523801',
-      title: 'Eu Odeio Segunda-Feira',
-      image: 'https://img10.orkut.br.com/community/b2ee499a725f11c77dd956896a93d75a.jpg',
-      url: 'https://www.orkut.br.com/MainCommunity?cmm=27831'
-    },
-    {
-      id: '1498019835235801',
-      title: 'Jiraiya O Incrível Ninja',
-      image: 'https://img10.orkut.br.com/community/8f20eb9135ec6d78d39ece8cdd2b4548.jpg',
-      url: 'https://www.orkut.br.com/MainCommunity?cmm=38341'
-    },
-  ]);
+  const [comunidades, setComunidades] = React.useState([]);
   const [followers, setFollowers] = useState([]);
   const [userInfo, setUserInfo] = useState({});
 
-  useEffect(() => {
-    fetch(`https://api.github.com/users/${githubUser}/followers`)
-      .then(async (response) => {
-        if (response.ok) {
-          const resposta = await response.json();
-
-          return resposta;
-        }
-
+  useEffect(async () => {
+    try {
+      const followersRes = await fetch(`https://api.github.com/users/${githubUser}/followers`);
+      if (!followersRes.ok) {
         throw new Error('Não foi possível pegar os dados :(');
-      })
-      .then((response) => {
-        const followersResponse = response.map(follower => follower.login)
-        setFollowers(followersResponse.concat(pessoasFavoritas));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      }
+      const resposta = await followersRes.json();
+      setFollowers(resposta);
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
-  useEffect(() => {
-    fetch(`https://api.github.com/users/${githubUser}`)
-      .then(async (response) => {
-        if (response.ok) {
-          const resposta = await response.json();
-
-          return resposta;
-        }
-
+  useEffect(async () => {
+    try {
+      const userRes = await fetch(`https://api.github.com/users/${githubUser}`);
+      if (!userRes.ok) {
         throw new Error('Não foi possível pegar os dados :(');
-      })
-      .then((response) => {
-        setUserInfo(response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      }
+      const resposta = await userRes.json();
+      setUserInfo(resposta);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const token = process.env.NEXT_PUBLIC_API_KEY;
+
+  React.useEffect(async () => {
+    try {
+      const datoRes = await fetch(
+        'https://graphql.datocms.com/',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            query: `{ allCommunities {
+                id
+                title
+                image
+                url
+              } }`
+          }),
+        }
+      );
+      const convRes = await datoRes.json();
+      setComunidades(convRes.data.allCommunities)
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   return (
@@ -181,40 +229,9 @@ export default function Home() {
           </Box>
         </div>
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Pessoas da comunidade ({followers.length})
-            </h2>
-            <ul>
-              {followers.slice(0, 6).map((itemAtual) => {
-                return (
-                  <li key={itemAtual}>
-                    <a href={`https://github.com/${itemAtual}`}>
-                      <img src={`https://github.com/${itemAtual}.png`} />
-                      <span>{itemAtual}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Comunidades ({comunidades.length})
-            </h2>
-            <ul>
-              {comunidades.slice(0, 6).map((itemAtual) => {
-                return (
-                  <li key={itemAtual.id}>
-                    <a href={itemAtual.url}>
-                      <img src={itemAtual.image} />
-                      <span>{itemAtual.title}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
+          <ProfileRelationsFollowersBox title="Seguidores" items={followers} />
+          <ProfileRelationsPeopleBox title="Pessoas da comunidade" items={pessoasFavoritas} />
+          <ProfileRelationsCommunitiesBox title="Comunidades" items={comunidades} />
         </div>
       </MainGrid>
     </>
