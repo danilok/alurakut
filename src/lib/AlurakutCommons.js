@@ -80,7 +80,7 @@ AlurakutMenu.Wrapper = styled.header`
     }
     .boxLink {
       font-size: 18px;
-      color: #2E7BB4;
+      color: ${({ theme }) => theme.colors.title};
       -webkit-text-decoration: none;
       text-decoration: none;
       font-weight: 800;
@@ -211,6 +211,10 @@ export function AlurakutProfileSidebarMenuDefault() {
           <img src={`${BASE_URL}/icons/plus.svg`} />
           GitHub Trends
         </a>
+        <a href="https://github.com/danilok/alurakut">
+          <img src={`https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png`} />
+          Repositório
+        </a>
         <a href="/logout">
           <img src={`${BASE_URL}//icons/logout.svg`} />
           Sair
@@ -222,7 +226,7 @@ export function AlurakutProfileSidebarMenuDefault() {
 AlurakutProfileSidebarMenuDefault.Wrapper = styled.div`
   a {
     font-size: 12px;
-    color: #2E7BB4;
+    color: ${({ theme }) => theme.colors.title};
     margin-bottom: 16px;
     display: flex;
     align-items: center;

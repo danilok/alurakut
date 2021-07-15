@@ -4,6 +4,7 @@ import Box from '../src/components/Box'
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons'
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations'
 import { useState, useEffect } from 'react'
+import { SiteClient } from 'datocms-client';
 
 function ProfileSidebar(propriedades) {
   return (
@@ -133,30 +134,16 @@ export default function Home() {
   }, []);
 
   const token = process.env.NEXT_PUBLIC_API_KEY;
+  const client = new SiteClient(token);
 
   React.useEffect(async () => {
     try {
-      const datoRes = await fetch(
-        'https://graphql.datocms.com/',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            query: `{ allCommunities {
-                id
-                title
-                image
-                url
-              } }`
-          }),
-        }
-      );
-      const convRes = await datoRes.json();
-      setComunidades(convRes.data.allCommunities)
+      const records = await client.items.all({
+        filter: {
+          type: "community",
+        },
+      });
+      setComunidades(records)
     } catch (error) {
       console.log(error);
     }
@@ -182,21 +169,24 @@ export default function Home() {
           <Box>
             <h2 className="subTitle">O que você deseja fazer?</h2>
 
-            <form onSubmit={function handleCriaComunidade(e) {
+            <form onSubmit={async function handleCriaComunidade(e) {
               e.preventDefault();
 
               const dadosDoForm = new FormData(e.target);
 
               const comunidade = {
-                id: new Date().toISOString(),
+                itemType: process.env.NEXT_PUBLIC_COMMUNITY_MODEL_ID,
                 title: dadosDoForm.get('title'),
-                image: dadosDoForm.get('image')
+                image: dadosDoForm.get('image'),
+                url: dadosDoForm.get('url')
               }
 
-              const comunidadesAtualizadas = [...comunidades, comunidade];
-              setComunidades(comunidadesAtualizadas);
-
-              e.target.reset();
+              const record = await client.items.create(comunidade);
+              if (record) {
+                const comunidadesAtualizadas = [...comunidades, record];
+                setComunidades(comunidadesAtualizadas);
+                e.target.reset();
+              }
             }}>
               <div>
                 <input
