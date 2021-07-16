@@ -4,7 +4,6 @@ import Box from '../src/components/Box'
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons'
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations'
 import { useState, useEffect } from 'react'
-import { SiteClient } from 'datocms-client';
 
 function ProfileSidebar(propriedades) {
   return (
@@ -133,17 +132,14 @@ export default function Home() {
     }
   }, []);
 
-  const token = process.env.NEXT_PUBLIC_API_KEY;
-  const client = new SiteClient(token);
-
   React.useEffect(async () => {
     try {
-      const records = await client.items.all({
-        filter: {
-          type: "community",
-        },
-      });
-      setComunidades(records)
+      const communitiesRes = await fetch(`/api/comunidades`);
+      if (!communitiesRes.ok) {
+        throw new Error('Não foi possível pegar os dados :(');
+      }
+      const resposta = await communitiesRes.json();
+      setComunidades(resposta)
     } catch (error) {
       console.log(error);
     }
@@ -175,15 +171,23 @@ export default function Home() {
               const dadosDoForm = new FormData(e.target);
 
               const comunidade = {
-                itemType: process.env.NEXT_PUBLIC_COMMUNITY_MODEL_ID,
                 title: dadosDoForm.get('title'),
                 image: dadosDoForm.get('image'),
                 url: dadosDoForm.get('url')
               }
 
-              const record = await client.items.create(comunidade);
-              if (record) {
-                const comunidadesAtualizadas = [...comunidades, record];
+              const communityRes = await fetch('/api/comunidades', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(comunidade)
+              });
+              if (communityRes.ok) {
+                const record = await communityRes.json();
+                console.log(record);
+
+                const comunidadesAtualizadas = [record, ...comunidades];
                 setComunidades(comunidadesAtualizadas);
                 e.target.reset();
               }

@@ -1,5 +1,6 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { AlurakutStyles } from '../src/lib/AlurakutCommons'
+import Head from 'next/head'
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -47,6 +48,10 @@ const theme = {
 export default function App({ Component, pageProps }) {
   return (
     <>
+      <Head>
+        <title>Alurakut</title>
+        <meta property="og:title" content="Alurakut" key="title" />
+      </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <Component {...pageProps} />
