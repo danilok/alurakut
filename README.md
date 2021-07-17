@@ -37,10 +37,12 @@ Criar um arquivo `.env.local`
 ```
 NEXT_PUBLIC_API_KEY=<api_dato>
 NEXT_PUBLIC_COMMUNITY_MODEL_ID=<model_id_comunidade>
+NEXT_PUBLIC_SCRAP_MODEL_ID=<model_id_scrap>
 ```
 
 - NEXT_PUBLIC_API_KEY: API Token gerado no Dato
 - NEXT_PUBLIC_COMMUNITY_MODEL_ID: ID do modelo Community criado no Dato
+- NEXT_PUBLIC_SCRAP_MODEL_ID: ID do modelo Scrap criado no Dato
 
 # Para rodar localmente
 

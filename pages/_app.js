@@ -51,6 +51,10 @@ export default function App({ Component, pageProps }) {
       <Head>
         <title>Alurakut</title>
         <meta property="og:title" content="Alurakut" key="title" />
+        <meta property="og:description" content="Imersão React Next by Alura - 3ª edição" key="title" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://alurakut-danilok.vercel.app" />
+        <meta property="og:image" content="https://alurakut.vercel.app/logo.svg" />
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
