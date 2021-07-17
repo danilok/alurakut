@@ -12,6 +12,8 @@ A ideia do projeto é uma interface inspirada na antiga rede social Orkut.
 - FetchAPI
 - Vercel
 - Git
+- Nookies (Cookies)
+- JWT
 
 # Conhecimentos básicos necessários
 
@@ -25,6 +27,8 @@ A ideia do projeto é uma interface inspirada na antiga rede social Orkut.
   - yarn ou npm
 - Git
 - Github
+- Cookies
+- Autenticação
 
 # Configuração
 

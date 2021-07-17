@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router'
 
 const BASE_URL = 'http://alurakut.vercel.app/';
 const v = '1';
@@ -35,9 +36,11 @@ export function AlurakutMenu({ githubUser }) {
         </nav>
 
         <nav>
-          <a href={`/logout`}>
-            Sair
-          </a>
+          <NextLink href="/logout">
+            <a>
+              Sair
+            </a>
+          </NextLink>
           <div>
             <input placeholder="Pesquisar no Orkut" />
           </div>
@@ -185,6 +188,7 @@ function AlurakutMenuProfileSidebar({ githubUser }) {
 // AlurakutProfileSidebarMenuDefault
 // ================================================================================================================
 export function AlurakutProfileSidebarMenuDefault() {
+  const router = useRouter()
   return (
     <AlurakutProfileSidebarMenuDefault.Wrapper>
       <nav>
@@ -215,10 +219,12 @@ export function AlurakutProfileSidebarMenuDefault() {
           <img src={`https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png`} />
           Repositório
         </a>
-        <a href="/logout">
-          <img src={`${BASE_URL}//icons/logout.svg`} />
-          Sair
-        </a>
+        <NextLink href="/logout">
+          <a>
+            <img src={`${BASE_URL}//icons/logout.svg`} />
+            Sair
+          </a>
+        </NextLink>
       </nav>
     </AlurakutProfileSidebarMenuDefault.Wrapper>
   )
@@ -459,6 +465,57 @@ const AlurakutLoginScreen = css`
 `;
 
 // ================================================================================================================
+// Home Styles
+// ================================================================================================================
+export const AlurakutHomeStyles = css`
+  .actionButtons {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .scrapTextArea {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 8px;
+  }
+
+  .scrapTitle {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .scrapList {
+    list-style: none;
+  }
+
+  .scrapImg {
+    width: 64px;
+    height: 64px;
+    margin-right: 20px;
+  }
+
+  .scrapItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .scrapMessage {
+    flex-grow: 1;
+    border: 1px solid #ffffff;
+    border-radius: 2px;
+    color: #ffffff;
+    height: 64px;
+    box-sizing: border-box;
+    padding: 5px;
+  }
+`;
+
+// ================================================================================================================
 // Reset Styles
 // ================================================================================================================
 export const AlurakutStyles = css`
@@ -502,4 +559,5 @@ export const AlurakutStyles = css`
     }
   }
   ${AlurakutLoginScreen}
+  ${AlurakutHomeStyles}
 `;
