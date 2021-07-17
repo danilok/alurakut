@@ -50,8 +50,10 @@ export default function App({ Component, pageProps }) {
     <>
       <Head>
         <title>Alurakut</title>
+        <meta name="title" content="Alurakut" />
+        <meta name="description" content="Imersão React Next by Alura - 3ª edição" />
         <meta property="og:title" content="Alurakut" key="title" />
-        <meta property="og:description" content="Imersão React Next by Alura - 3ª edição" key="title" />
+        <meta property="og:description" content="Imersão React Next by Alura - 3ª edição" key="description" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://alurakut-danilok.vercel.app" />
         <meta property="og:image" content="https://alurakut.vercel.app/logo.svg" />
