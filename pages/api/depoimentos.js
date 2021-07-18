@@ -6,34 +6,33 @@ const client = new SiteClient(token);
 const methods = {
   POST: async (request, response) => {
     const record = await client.items.create({
-      itemType: process.env.NEXT_PUBLIC_COMMUNITY_MODEL_ID,
+      itemType: process.env.NEXT_PUBLIC_TESTIMONIAL_MODEL_ID,
       ...request.body
     });
     return response.status(200).send(record)
   },
   GET: async (request, response) => {
-    const { creator_slug } = request.query;
+    const { user_receiver } = request.query;
     const query = {
       filter: {
-        type: "community"
+        type: "testimonial"
       }
     }
-    if (creator_slug) {
+    if (user_receiver) {
       query.filter.fields = {
-        creatorSlug: {
-          eq: creator_slug
+        userReceiver: {
+          eq: user_receiver
         }
       }
     }
-
     const records = await client.items.all(query);
     const serialized = records.map((record) => {
       return {
         id: record.id,
-        title: record.title,
-        image: record.image,
-        url: record.url,
-        creatorSlug: record.creatorSlug
+        testimonial: record.testimonial,
+        creatorSlug: record.creatorSlug,
+        userReceiver: record.userReceiver,
+        createdAt: record.createdAt
       }
     })
     return response.status(200).send(serialized)
@@ -46,7 +45,7 @@ const methods = {
   }
 }
 
-export default async function comunidades(request, response) {
+export default async function recados(request, response) {
 
   const method = request.method;
   const exec = methods[method];

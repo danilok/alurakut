@@ -24,10 +24,10 @@ export default function LoginScreen(props) {
             e.preventDefault();
 
             try {
-              const validUserRes = await fetch(`https://api.github.com/users/${githubUser}`)
-              if (!validUserRes.ok) {
-                throw new Error('Não foi possível pegar os dados :(');
-              }
+              // const validUserRes = await fetch(`https://api.github.com/users/${githubUser}`)
+              // if (!validUserRes.ok) {
+              //   throw new Error('Não foi possível pegar os dados :(');
+              // }
 
               const tokenRes = await fetch('https://alurakut.vercel.app/api/login', {
                 method: 'POST',
@@ -51,7 +51,9 @@ export default function LoginScreen(props) {
             </p>
             <input
               placeholder="Usuário"
+              type="text"
               value={githubUser}
+              name="username"
               onChange={(e) => {
                 setGithubUser(e.target.value)
                 if (e.target.value.length === 0) {

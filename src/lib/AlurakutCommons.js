@@ -172,50 +172,57 @@ function AlurakutMenuProfileSidebar({ githubUser }) {
         <img src={`https://github.com/${githubUser}.png`} style={{ borderRadius: '8px' }} />
         <hr />
         <p>
-          <a className="boxLink" href={`/user/${githubUser}`}>
+          <a className="boxLink" href={`https://www.github.com/${githubUser}`} >
             @{githubUser}
           </a>
         </p>
         <hr />
 
-        <AlurakutProfileSidebarMenuDefault />
+        <AlurakutProfileSidebarMenuDefault githubUser={githubUser} />
       </div>
-    </div>
+    </div >
   )
 }
 
 // ================================================================================================================
 // AlurakutProfileSidebarMenuDefault
 // ================================================================================================================
-export function AlurakutProfileSidebarMenuDefault() {
-  const router = useRouter()
+export function AlurakutProfileSidebarMenuDefault(props) {
   return (
     <AlurakutProfileSidebarMenuDefault.Wrapper>
       <nav>
-        <a href="/">
-          <img src={`${BASE_URL}/icons/user.svg`} />
-          Perfil
-        </a>
-        <a href="/">
-          <img src={`${BASE_URL}/icons/book.svg`} />
-          Recados
-        </a>
-        <a href="/">
-          <img src={`${BASE_URL}/icons/camera.svg`} />
-          Fotos
-        </a>
-        <a href="/">
-          <img src={`${BASE_URL}/icons/sun.svg`} />
-          Depoimentos
-        </a>
+        <NextLink href={`/users/${props.githubUser}`}>
+          <a>
+            <img src={`${BASE_URL}/icons/user.svg`} />
+            Perfil
+          </a>
+        </NextLink>
+        <NextLink href={`/scraps/${props.githubUser}`}>
+          <a>
+            <img src={`${BASE_URL}/icons/book.svg`} />
+            Recados
+          </a>
+        </NextLink>
+        <NextLink href={`/albuns/${props.githubUser}`}>
+          <a>
+            <img src={`${BASE_URL}/icons/camera.svg`} />
+            Fotos
+          </a>
+        </NextLink>
+        <NextLink href={`/testimonials/${props.githubUser}`}>
+          <a>
+            <img src={`${BASE_URL}/icons/sun.svg`} />
+            Depoimentos
+          </a>
+        </NextLink>
       </nav>
       <hr />
       <nav>
-        <a href="/">
+        <a href="https://github.com/trending">
           <img src={`${BASE_URL}/icons/plus.svg`} />
           GitHub Trends
         </a>
-        <a href="https://github.com/danilok/alurakut">
+        <a href={`https://github.com/${props.githubUser}/alurakut`}>
           <img src={`https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png`} />
           Repositório
         </a>
@@ -512,6 +519,33 @@ export const AlurakutHomeStyles = css`
     height: 64px;
     box-sizing: border-box;
     padding: 5px;
+  }
+
+  .profileData {
+    list-style: none;
+    color: #ffffff;
+    width: 100%;
+  }
+
+  .profileLine {
+    width: 100%;
+  }
+
+  .profileLine:nth-child(odd) {
+    background-color: #ffffff50;
+  }
+
+  .profileTitle {
+    text-align: end;
+    padding-right: 10px;
+    width:50%;
+    display: inline-block;
+    color: #dacfcf;
+  }
+  
+  .profileValue {
+    text-align: start;
+    width:50%;
   }
 `;
 

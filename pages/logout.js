@@ -19,7 +19,7 @@ export default function LogoutPage() {
     let mounted = true
     if (mounted) {
       nookies.destroy(null, 'USER_TOKEN')
-      router.push('/')
+      router.push('/login')
     }
     return () => {
       mounted = false

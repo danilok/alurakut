@@ -1,16 +1,14 @@
+/* eslint-disable linebreak-style */
 import React from 'react';
-import Box from '../src/components/Box';
-import MainGrid from '../src/components/MainGrid';
-import ProfileSidebar from '../src/components/ProfileSidebar';
-import { AlurakutMenu } from '../src/lib/AlurakutCommons';
-import nookies from 'nookies'
-import { decode } from 'jsonwebtoken'
+import Box from '../../src/components/Box';
+import Loader from '../../src/components/Loader';
+import MainGrid from '../../src/components/MainGrid';
+import ProfileSidebar from '../../src/components/ProfileSidebar';
+import { AlurakutMenu } from '../../src/lib/AlurakutCommons';
 
 import styled from 'styled-components';
-import Loader from '../src/components/Loader';
 
-
-const CommunitiesBoxWrapper = styled(Box)`
+const TestimonialsBoxWrapper = styled(Box)`
   min-height: 90vh;
   overflow: auto;
   background-color: ${({ theme }) => theme.colors.backgroundLight};
@@ -57,22 +55,24 @@ const CommunitiesBoxWrapper = styled(Box)`
       overflow: hidden;
       text-overflow: ellipsis;
       width: 100%;
+      align-self: flex-start;
     }
   }
 `;
 
-export default function CommunitiesPage(props) {
-  const [comunidades, setComunidades] = React.useState([]);
+export default function TestimonialsPage({ githubUser }) {
+
+  const [depoimentos, setDepoimentos] = React.useState([]);
   const [showLoader, setShowLoader] = React.useState(true);
 
   React.useEffect(async () => {
     try {
-      const communitiesRes = await fetch(`/api/comunidades?creator_slug=${props.githubUser}`);
-      if (!communitiesRes.ok) {
+      const scrapsRes = await fetch(`/api/depoimentos?user_receiver=${githubUser}`);
+      if (!scrapsRes.ok) {
         throw new Error('Não foi possível pegar os dados :(');
       }
-      const resposta = await communitiesRes.json();
-      setComunidades(resposta)
+      const resposta = await scrapsRes.json();
+      setDepoimentos(resposta)
       setShowLoader(false)
     } catch (error) {
       console.log(error);
@@ -81,34 +81,38 @@ export default function CommunitiesPage(props) {
 
   return (
     <>
-      <AlurakutMenu githubUser={props.githubUser} />
+      <AlurakutMenu githubUser={githubUser} />
       <MainGrid>
         <div className="profileArea" style={{ gridArea: 'profileArea' }}>
-          <ProfileSidebar githubUser={props.githubUser} />
+          <ProfileSidebar githubUser={githubUser} />
         </div>
         <div className="welcomeArea" style={{ gridArea: 'welcomeArea' }}>
-          <CommunitiesBoxWrapper>
+          <TestimonialsBoxWrapper>
             <h1 className="title">
-              Comunidades ({comunidades.length})
+              Depoimentos ({depoimentos.length})
             </h1>
+            {depoimentos.length === 0
+              ? <p style={{ color: 'white' }}>Nenhum depoimento encontrado</p>
+              : ''
+            }
 
             {showLoader && <Loader />}
 
             {!showLoader && (
               <ul>
-                {comunidades.map((itemAtual) => {
+                {depoimentos.map((itemAtual) => {
                   return (
                     <li key={itemAtual.id}>
-                      <a href={itemAtual.url}>
-                        <img src={itemAtual.image} />
-                        <span>{itemAtual.title}</span>
+                      <a>
+                        <img src={`https://github.com/${itemAtual.creatorSlug}.png`} />
+                        <span>{itemAtual.testimonial}</span>
                       </a>
                     </li>
                   )
                 })}
               </ul>
             )}
-          </CommunitiesBoxWrapper>
+          </TestimonialsBoxWrapper>
         </div>
       </MainGrid>
     </>
@@ -116,50 +120,14 @@ export default function CommunitiesPage(props) {
 }
 
 export async function getServerSideProps(context) {
-  const cookies = nookies.get(context);
-  const token = cookies.USER_TOKEN;
 
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      }
-    }
-  }
+  const githubUser = context.query.id;
+  // validar usuario no github
 
-  let isAuthenticated = false;
-  try {
-    const authRes = await fetch(`${process.env.NEXT_PUBLIC_AUTH_URL}/api/auth`, {
-      headers: {
-        Authorization: token
-      }
-    })
-    if (!authRes.ok) {
-      throw new Error('Não foi possível pegar os dados :(');
-    }
-    isAuthenticated = await authRes.json();
-  } catch (error) {
-    console.error(error)
-  }
-
-  if (!isAuthenticated) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-      props: {
-        isAuthenticated
-      }
-    }
-  }
-
-  const { githubUser } = decode(token);
-
+  // console.log('dbExterno', dbExterno);
   return {
     props: {
-      githubUser
-    },
-  }
+      githubUser,
+    }, // will be passed to the page component as props
+  };
 }
