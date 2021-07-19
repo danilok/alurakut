@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ProfileRelationsBoxWrapper } from '../ProfileRelations'
 import ProfileRelationsTitle from '../ProfileRelationsTitle'
+import ShowAllLink from '../ShowAllLink'
 
 export default function ProfileRelationsFollowersBox(propriedades) {
   return (
@@ -20,6 +21,13 @@ export default function ProfileRelationsFollowersBox(propriedades) {
           )
         })}
       </ul>
+      {propriedades.items.length > 6 && (
+        <Link href="/amigos">
+          <ShowAllLink>
+            <span>Ver todos</span>
+          </ShowAllLink>
+        </Link>
+      )}
     </ProfileRelationsBoxWrapper>
   )
 }

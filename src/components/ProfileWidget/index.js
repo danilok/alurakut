@@ -24,10 +24,12 @@ export default function ProfileWidget(props) {
             <span className="profileTitle">Repositórios públicos: </span>
             <span className="profileValue">{props.userInfo.public_repos}</span>
           </li>
-          <li className="profileLine" key="location">
-            <span className="profileTitle">Localização: </span>
-            <span className="profileValue">{props.userInfo.location}</span>
-          </li>
+          {props.userInfo.location && (
+            <li className="profileLine" key="location">
+              <span className="profileTitle">Localização: </span>
+              <span className="profileValue">{props.userInfo.location}</span>
+            </li>
+          )}
           <li className="profileLine" key="followers">
             <span className="profileTitle">Seguidores: </span>
             <span className="profileValue">{props.userInfo.followers}</span>

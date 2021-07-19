@@ -197,7 +197,7 @@ export function AlurakutProfileSidebarMenuDefault(props) {
             Perfil
           </a>
         </NextLink>
-        <NextLink href={`/scraps/${props.githubUser}`}>
+        <NextLink href={`/users/${props.githubUser}/scraps`}>
           <a>
             <img src={`${BASE_URL}/icons/book.svg`} />
             Recados

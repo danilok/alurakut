@@ -50,11 +50,34 @@ export default function Home(props) {
 
   useEffect(async () => {
     try {
-      const userRes = await fetch(`https://api.github.com/users/${githubUser}`);
-      if (!userRes.ok) {
-        throw new Error('Não foi possível pegar os dados :(');
+      const userLocalRes = await fetch(`/api/usuarios?login=${githubUser}`);
+      if (!userLocalRes.ok) {
+        // throw new Error('Não foi possível pegar os dados :(');
+        const userRes = await fetch(`https://api.github.com/users/${githubUser}`);
+        if (!userRes.ok) {
+          throw new Error('Não foi possível pegar os dados :(');
+        }
+        const resposta = await userRes.json();
+        setUserInfo(resposta);
+
+        const creatUserInfoRes = await fetch('/api/usuarios', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            login: resposta.login,
+            name: resposta.name,
+            creationDate: resposta.created_at,
+            publicRepos: resposta.public_repos,
+            location: resposta.location,
+            followers: resposta.followers,
+            following: resposta.following
+          })
+        });
+        return;
       }
-      const resposta = await userRes.json();
+      const resposta = await userLocalRes.json();
       setUserInfo(resposta);
     } catch (error) {
       console.log(error);
@@ -63,7 +86,7 @@ export default function Home(props) {
 
   React.useEffect(async () => {
     try {
-      const communitiesRes = await fetch(`/api/comunidades`);
+      const communitiesRes = await fetch(`/api/comunidades?creator_slug=${githubUser}`);
       if (!communitiesRes.ok) {
         throw new Error('Não foi possível pegar os dados :(');
       }
@@ -76,7 +99,7 @@ export default function Home(props) {
 
   React.useEffect(async () => {
     try {
-      const scrapsRes = await fetch(`/api/recados`);
+      const scrapsRes = await fetch(`/api/recados?user_receiver=${githubUser}`);
       if (!scrapsRes.ok) {
         throw new Error('Não foi possível pegar os dados :(');
       }
@@ -145,6 +168,7 @@ export default function Home(props) {
             {screenState === screenStates.SCRAPS && (
               <ScrapsWidget
                 githubUser={githubUser}
+                loggedUser={githubUser}
                 recados={recados}
                 onSubmit={setRecados}
               />)}

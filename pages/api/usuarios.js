@@ -6,32 +6,39 @@ const client = new SiteClient(token);
 const methods = {
   POST: async (request, response) => {
     const record = await client.items.create({
-      itemType: process.env.NEXT_PUBLIC_SCRAP_MODEL_ID,
+      itemType: process.env.NEXT_PUBLIC_GITHUB_USER_MODEL_ID,
       ...request.body
     });
     return response.status(200).send(record)
   },
   GET: async (request, response) => {
-    const { user_receiver } = request.query;
+    const { login } = request.query;
     const query = {
       filter: {
-        type: "scrap"
+        type: "githubuser"
       }
     }
-    if (user_receiver) {
+    if (login) {
       query.filter.fields = {
-        userReceiver: {
-          eq: user_receiver
+        login: {
+          eq: login
         }
       }
     }
     const records = await client.items.all(query);
+    if (records.length === 0) {
+      return response.status(404).send();
+    }
     const serialized = records.map((record) => {
       return {
         id: record.id,
-        scrap: record.scrap,
-        creatorSlug: record.creatorSlug,
-        createdAt: record.createdAt
+        login: record.login,
+        name: record.name,
+        created_at: record.creationDate,
+        public_repos: record.publicRepos,
+        followers: record.followers,
+        following: record.following,
+        location: record.location
       }
     })
     return response.status(200).send(serialized)

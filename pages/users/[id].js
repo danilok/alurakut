@@ -49,12 +49,12 @@ export default function UserPage(props) {
 
   React.useEffect(async () => {
     try {
-      const userRes = await fetch(`https://api.github.com/users/${githubUser}`);
+      const userRes = await fetch(`/api/usuarios?login=${githubUser}`);
       if (!userRes.ok) {
         throw new Error('Não foi possível pegar os dados :(');
       }
       const resposta = await userRes.json();
-      setUserInfo(resposta);
+      setUserInfo(resposta[0]);
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +62,7 @@ export default function UserPage(props) {
 
   React.useEffect(async () => {
     try {
-      const communitiesRes = await fetch(`/api/comunidades`);
+      const communitiesRes = await fetch(`/api/comunidades?creator_slug=${githubUser}`);
       if (!communitiesRes.ok) {
         throw new Error('Não foi possível pegar os dados :(');
       }
@@ -75,7 +75,7 @@ export default function UserPage(props) {
 
   React.useEffect(async () => {
     try {
-      const scrapsRes = await fetch(`/api/recados`);
+      const scrapsRes = await fetch(`/api/recados?user_receiver=${githubUser}`);
       if (!scrapsRes.ok) {
         throw new Error('Não foi possível pegar os dados :(');
       }
@@ -142,7 +142,6 @@ export async function getServerSideProps(context) {
   const githubUser = context.query.id;
   // validar usuario no github
 
-  // console.log('dbExterno', dbExterno);
   return {
     props: {
       githubUser,

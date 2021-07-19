@@ -124,7 +124,6 @@ export async function getServerSideProps(context) {
   const githubUser = context.query.id;
   // validar usuario no github
 
-  // console.log('dbExterno', dbExterno);
   return {
     props: {
       githubUser,

@@ -12,7 +12,8 @@ export default function ScrapsWidget(props) {
 
         const recado = {
           scrap: dadosDoForm.get('scrap'),
-          creatorSlug: props.githubUser
+          creatorSlug: props.loggedUser,
+          userReceiver: props.githubUser
         }
 
         const scrapRes = await fetch('/api/recados', {

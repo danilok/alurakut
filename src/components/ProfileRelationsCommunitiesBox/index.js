@@ -1,4 +1,6 @@
+import Link from 'next/link'
 import { ProfileRelationsBoxWrapper } from '../ProfileRelations'
+import ShowAllLink from '../ShowAllLink';
 import ProfileRelationsTitle from '../ProfileRelationsTitle'
 
 export default function ProfileRelationsCommunitiesBox(propriedades) {
@@ -17,6 +19,13 @@ export default function ProfileRelationsCommunitiesBox(propriedades) {
           )
         })}
       </ul>
+      {propriedades.items.length > 6 && (
+        <Link href="/comunidades">
+          <ShowAllLink>
+            <span>Ver todos</span>
+          </ShowAllLink>
+        </Link>
+      )}
     </ProfileRelationsBoxWrapper>
   )
 }
