@@ -76,4 +76,4 @@ yarn dev
 
 # Para testar online
 
-O projeto está hospedado na Vercel, para acessar [clique aqui](httpa://alurakut-danilok.vercel.app).
+O projeto está hospedado na Vercel, para acessar [clique aqui](https://alurakut-danilok.vercel.app).
